@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="A sample learning insights report on fictional data by Hareem Masood: completion vs on-the-job use, module drop-off, course length and a store-level look at learning and customer satisfaction.">
+<meta name="author" content="Hareem Masood">
+<title>Learning Impact Snapshot</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a single reading column like a short client report, with charts as full-width figures and a squared-paper header nodding to the classroom. */
+:root{
+  --bg:#f7f9fb; --paper:#ffffff; --ink:#142536; --ink-2:#4a5a6a; --ink-3:#6f7d8b;
+  --rule:#dde4ea; --grid:#e9eef2; --series:#2a78d6; --flag:#eb6834; --flag-ink:#b8461a;
+  --note-bg:#eef4fb; --tip-bg:#142536; --tip-fg:#ffffff;
+  --display:"Young Serif", Georgia, "Times New Roman", serif;
+  --body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10171e; --paper:#162029; --ink:#e8eef3; --ink-2:#b4c0cb; --ink-3:#8f9daa;
+  --rule:#2a3642; --grid:#22303b; --series:#3987e5; --flag:#d95926; --flag-ink:#f0905f;
+  --note-bg:#1a2a3a; --tip-bg:#e8eef3; --tip-fg:#10171e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10171e; --paper:#162029; --ink:#e8eef3; --ink-2:#b4c0cb; --ink-3:#8f9daa;
+  --rule:#2a3642; --grid:#22303b; --series:#3987e5; --flag:#d95926; --flag-ink:#f0905f;
+  --note-bg:#1a2a3a; --tip-bg:#e8eef3; --tip-fg:#10171e; color-scheme:dark}
+
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6}
+.wrap{max-width:760px;margin:0 auto;padding-inline:20px;padding-block:0 64px}
+header.hero{
+  padding-block:44px 32px;border-bottom:1px solid var(--rule);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:22px 22px;background-position:-1px -1px}
+.hero .wrap{padding-block:0}
+.eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(34px,6vw,50px);line-height:1.1;margin:10px 0 14px;text-wrap:balance}
+h2{font-family:var(--display);font-weight:400;font-size:clamp(23px,3.6vw,28px);line-height:1.2;margin:0 0 8px;text-wrap:balance}
+p{margin:0 0 14px;max-width:65ch}
+.lede{font-size:18px;color:var(--ink-2)}
+.sample{display:inline-flex;gap:8px;align-items:center;font-family:var(--mono);font-size:13px;background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:6px 10px;color:var(--ink-2)}
+.sample b{color:var(--flag-ink);font-weight:500;white-space:nowrap}
+
+.findings{display:grid;gap:14px;margin:32px 0 8px;padding:0;list-style:none}
+.findings li{display:grid;grid-template-columns:minmax(4.6em,max-content) 1fr;column-gap:20px;gap:14px;align-items:baseline;padding-bottom:14px;border-bottom:1px solid var(--rule)}
+.findings .big{font-family:var(--display);font-size:28px;line-height:1;white-space:nowrap;font-variant-numeric:tabular-nums}
+.findings span:last-child{min-width:0}
+.findings .unit{font-size:.55em;font-family:var(--body);font-weight:500;color:var(--ink-2)}
+
+section{margin-top:52px}
+figure{margin:18px 0 0;background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:18px 16px 10px;position:relative}
+figcaption{font-size:14px;color:var(--ink-2);margin-bottom:6px}
+svg{display:block;width:100%;height:auto;overflow:visible}
+svg text{font-family:var(--body);font-size:13px;fill:var(--ink-2)}
+svg .val{fill:var(--ink);font-family:var(--mono);font-size:12.5px;font-variant-numeric:tabular-nums}
+svg .axis{fill:var(--ink-3);font-size:12px}
+svg .gridline{stroke:var(--grid);stroke-width:1}
+svg .base{stroke:var(--rule);stroke-width:1}
+svg .mark{fill:var(--series)}
+svg .mark.flag{fill:var(--flag)}
+svg .hit{fill:transparent;cursor:default}
+svg .hit:focus{outline:none}
+svg .hit:focus-visible + .mark,svg g:hover .mark{opacity:.85}
+svg .dot{fill:var(--series);stroke:var(--paper);stroke-width:2}
+svg .annot{fill:var(--flag-ink);font-size:12.5px}
+svg .trend{stroke:var(--ink-3);stroke-width:1.5;stroke-dasharray:4 4;fill:none}
+.tip{position:absolute;pointer-events:none;background:var(--tip-bg);color:var(--tip-fg);font-size:13px;line-height:1.4;padding:6px 9px;border-radius:5px;white-space:nowrap;transform:translate(-50%,calc(-100% - 10px));z-index:2}
+details{margin-top:8px;font-size:14px}
+summary{cursor:pointer;color:var(--ink-2);padding:4px 0}
+summary:focus-visible{outline:2px solid var(--series);outline-offset:2px}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;margin:6px 0 4px;font-variant-numeric:tabular-nums;min-width:280px}
+th,td{text-align:left;padding:4px 14px 4px 0;border-bottom:1px solid var(--rule)}
+td.n,th.n{text-align:right}
+.note{background:var(--note-bg);border-radius:8px;padding:14px 16px;margin-top:16px}
+.note p:last-child{margin-bottom:0}
+.recs{counter-reset:r;list-style:none;padding:0;margin:16px 0 0;display:grid;gap:16px}
+.recs li{counter-increment:r;display:grid;grid-template-columns:2.2em 1fr;gap:10px}
+.recs li::before{content:counter(r);font-family:var(--display);font-size:22px;color:var(--series);line-height:1.2}
+.recs li > div{min-width:0}
+.recs b{display:block}
+.about{margin-top:60px;padding-top:28px;border-top:1px solid var(--rule)}
+.contact{display:flex;flex-wrap:wrap;gap:8px 22px;font-family:var(--mono);font-size:14px;margin-top:10px}
+.contact a{color:var(--series)}
+.contact span{user-select:all}
+a:focus-visible{outline:2px solid var(--series);outline-offset:2px}
+footer{margin-top:28px;font-size:13px;color:var(--ink-3)}
+@media (prefers-reduced-motion:no-preference){svg .mark,svg .dot{transition:opacity .15s}}
+</style>
+<style>body{margin:0} img{max-width:100%} [hidden]{display:none!important}</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">A sample learning insights report · by Hareem Masood</div>
+    <h1>Is the training actually working?</h1>
+    <p class="lede">Six months of learning data from a 1,200-person retail company, read the way a learning leader would want it: who finished, where people stopped, and whether any of it showed up in the stores.</p>
+    <span class="sample"><b>Sample data</b> Northbank Retail is a fictional company. I generated the data to practise this analysis.</span>
+  </div>
+</header>
+
+<main class="wrap">
+  <ul class="findings" aria-label="Key findings">
+    <li><span class="big">34%</span><span>of staff who were assigned the <i>Customer Conversations</i> pathway went on to use it on the job, even though 57% finished it.</span></li>
+    <li><span class="big">22%</span><span>of the learners still going quit at a single module: a 42-minute video. No other module lost more than 7%.</span></li>
+    <li><span class="big">3.7<small class="unit"> pts</small></span><span>average rise in customer satisfaction in stores where most staff finished the training, against 1.0 point where few did. Promising, but not yet proof.</span></li>
+  </ul>
+
+  <section aria-labelledby="s1">
+    <h2 id="s1">Finishing a course isn't the same as using it</h2>
+    <p>Completion is the number most dashboards stop at. Following each learner one step further, to whether their manager saw the new skill in a check-in, shows a second gap that is bigger than the first.</p>
+    <figure>
+      <figcaption>Staff at each stage of the <i>Customer Conversations</i> pathway (out of 1,200 assigned)</figcaption>
+      <div id="funnel"></div>
+      <details><summary>Show the numbers</summary><div class="tbl" id="funnel-t"></div></details>
+    </figure>
+  </section>
+
+  <section aria-labelledby="s2">
+    <h2 id="s2">One module is doing most of the damage</h2>
+    <p>The pathway has six modules. Almost everyone who reaches module 4 finishes, so the real problem sits earlier. Module 3 is the only long video in the pathway, and it is where one in five remaining learners stopped.</p>
+    <figure>
+      <figcaption>Learners still active when they reached each module</figcaption>
+      <div id="modules"></div>
+      <details><summary>Show the numbers</summary><div class="tbl" id="modules-t"></div></details>
+    </figure>
+  </section>
+
+  <section aria-labelledby="s3">
+    <h2 id="s3">Shorter content gets finished</h2>
+    <p>Looking across all 140 courses in the library, not just this pathway, completion falls steadily as courses get longer. Module 3 fits the pattern rather than being a one-off.</p>
+    <figure>
+      <figcaption>Average completion rate by course length, all courses</figcaption>
+      <div id="length"></div>
+      <details><summary>Show the numbers</summary><div class="tbl" id="length-t"></div></details>
+    </figure>
+  </section>
+
+  <section aria-labelledby="s4">
+    <h2 id="s4">Stores that learned more improved more, probably</h2>
+    <p>Each dot is one of the 24 stores. Stores where more staff completed the pathway tended to see bigger rises in customer satisfaction (correlation 0.73). That is a strong link, but it doesn't show the training caused it. A store with an engaged manager might push both numbers up at once.</p>
+    <figure>
+      <figcaption>Pathway completion rate vs change in customer satisfaction score, per store, over the same six months</figcaption>
+      <div id="stores"></div>
+      <details><summary>Show the numbers</summary><div class="tbl" id="stores-t"></div></details>
+    </figure>
+    <div class="note">
+      <p><b>How I'd find out for sure.</b> Roll the improved pathway out to half of the stores first, chosen at random, and compare satisfaction in both groups over the next quarter. Random selection takes manager quality out of the comparison, so any difference left is much more likely to be the training.</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="s5">
+    <h2 id="s5">What I'd recommend</h2>
+    <ol class="recs">
+      <li><div><b>Split module 3 into four short videos with a quick question after each.</b> It is the single biggest leak in the pathway. Recovering even half of the learners lost there would add around 100 completions.</div></li>
+      <li><div><b>Report "used on the job" next to completion.</b> The manager check-in data already exists. Putting it on the same dashboard keeps everyone focused on the outcome that matters.</div></li>
+      <li><div><b>Test before claiming impact.</b> Run the half-and-half rollout above before telling the board the training raised satisfaction. A clean result from a fair test is far more persuasive than a correlation.</div></li>
+    </ol>
+  </section>
+
+  <section class="about" aria-labelledby="s6">
+    <div class="eyebrow">Why I made this</div>
+    <h2 id="s6">Hi, I'm Hareem</h2>
+    <p>I taught maths for over five years, most recently as a senior teacher responsible for the results of 300+ students. The part of the job I loved most was this exact conversation: taking a pile of marks and turning it into a clear story that school leaders and parents could act on. I'm now moving into data, and Thrive's Learning Insights Analyst role sits right where my two worlds meet.</p>
+    <p>I built this with AI as my partner. I picked the questions a learning leader would actually ask, then worked with Claude to create realistic example data, analyse it and build this page, and I went through the numbers myself. The data is invented, but the way of thinking is the one I'd bring to a real customer.</p>
+    <div class="contact">
+      <span>hareemmasood40@gmail.com</span>
+      <span>07899 155730</span>
+      <a href="https://www.linkedin.com/in/hareem-masood-ai" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/hareemmasood40" target="_blank" rel="noopener">GitHub projects</a>
+    </div>
+    <footer>Horsham, West Sussex · Full right to work in the UK, no visa sponsorship needed.</footer>
+  </section>
+</main>
+
+<script>
+(function(){
+  const NS="http://www.w3.org/2000/svg";
+  const el=(n,a,p)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e};
+  const fmt=n=>n.toLocaleString("en-GB");
+
+  function tip(fig){let t=fig.querySelector(".tip");if(!t){t=document.createElement("div");t.className="tip";t.hidden=true;fig.appendChild(t)}return t}
+  function bindTip(target,fig,html,anchor){
+    const t=tip(fig);
+    const show=()=>{const fr=fig.getBoundingClientRect(),r=anchor.getBoundingClientRect();
+      t.innerHTML=html;t.hidden=false;
+      let x=r.left+r.width/2-fr.left;x=Math.max(70,Math.min(fr.width-70,x));
+      t.style.left=x+"px";t.style.top=(r.top-fr.top)+"px"};
+    const hide=()=>{t.hidden=true};
+    target.addEventListener("mouseenter",show);target.addEventListener("mouseleave",hide);
+    target.addEventListener("focus",show);target.addEventListener("blur",hide);
+  }
+  function table(id,head,rows){
+    const h="<table><thead><tr>"+head.map((c,i)=>`<th${i?' class="n"':''}>${c}</th>`).join("")+"</tr></thead><tbody>"+
+      rows.map(r=>"<tr>"+r.map((c,i)=>`<td${i?' class="n"':''}>${c}</td>`).join("")+"</tr>").join("")+"</tbody></table>";
+    document.getElementById(id).innerHTML=h;
+  }
+  // rounded-end bar anchored at the baseline (left for horizontal, bottom for vertical)
+  function hbarPath(x,y,w,h,r){r=Math.min(r,w,h/2);return `M${x},${y}H${x+w-r}Q${x+w},${y} ${x+w},${y+r}V${y+h-r}Q${x+w},${y+h} ${x+w-r},${y+h}H${x}Z`}
+  function vbarPath(x,y,w,h,r){r=Math.min(r,h,w/2);return `M${x},${y+h}V${y+r}Q${x},${y} ${x+r},${y}H${x+w-r}Q${x+w},${y} ${x+w},${y+r}V${y+h}Z`}
+
+  /* 1. Funnel: horizontal bars */
+  (function(){
+    const d=[["Assigned",1200],["Started",1014],["Completed",684],["Used on the job",412]];
+    const box=document.getElementById("funnel"),fig=box.closest("figure");
+    const W=700,lab=130,right=120,bh=30,gap=14,H=d.length*(bh+gap)+4;
+    const s=el("svg",{viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":"Bar chart of staff at each stage: assigned 1,200, started 1,014, completed 684, used on the job 412"},box);
+    const x=v=>v/1200*(W-lab-right);
+    d.forEach(([k,v],i)=>{
+      const y=i*(bh+gap)+2,g=el("g",{},s);
+      el("text",{x:0,y:y+bh/2+5},g).textContent=k;
+      const hit=el("rect",{class:"hit",x:lab,y:y-4,width:W-lab,height:bh+8,tabindex:0},g);
+      const m=el("path",{class:"mark",d:hbarPath(lab,y,x(v),bh,4)},g);
+      el("text",{class:"val",x:lab+x(v)+8,y:y+bh/2+5},g).textContent=`${fmt(v)} · ${Math.round(v/12)}%`;
+      const prev=i?d[i-1][1]:null;
+      bindTip(hit,fig,`<b>${k}</b><br>${fmt(v)} staff (${(v/12).toFixed(1)}% of assigned)`+(prev?`<br>${fmt(prev-v)} fewer than the stage before`:""),m);
+    });
+    el("line",{class:"base",x1:lab,x2:lab,y1:0,y2:H},s);
+    table("funnel-t",["Stage","Staff","% of assigned"],d.map(([k,v])=>[k,fmt(v),(v/12).toFixed(1)+"%"]));
+  })();
+
+  /* 2. Modules: vertical bars, module 3 flagged */
+  (function(){
+    const d=[1014,951,742,711,698,684];
+    const box=document.getElementById("modules"),fig=box.closest("figure");
+    const W=700,H=300,L=46,R=8,T=34,B=40,max=1200;
+    const s=el("svg",{viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":"Bar chart of active learners per module: 1,014, 951, 742, 711, 698, 684. The biggest drop is at module 3."},box);
+    const y=v=>T+(H-T-B)*(1-v/max),slot=(W-L-R)/d.length,bw=slot*0.56;
+    [0,300,600,900,1200].forEach(v=>{el("line",{class:"gridline",x1:L,x2:W-R,y1:y(v),y2:y(v)},s);el("text",{class:"axis",x:L-8,y:y(v)+4,"text-anchor":"end"},s).textContent=fmt(v)});
+    d.forEach((v,i)=>{
+      const cx=L+slot*i+slot/2,x0=cx-bw/2,g=el("g",{},s),flag=i===2;
+      const hit=el("rect",{class:"hit",x:L+slot*i,y:T-20,width:slot,height:H-T-B+20,tabindex:0},g);
+      const m=el("path",{class:"mark"+(flag?" flag":""),d:vbarPath(x0,y(v),bw,y(0)-y(v),4)},g);
+      el("text",{class:"val",x:cx,y:y(v)-8,"text-anchor":"middle"},g).textContent=fmt(v);
+      el("text",{class:"axis",x:cx,y:H-B+20,"text-anchor":"middle"},g).textContent=`Module ${i+1}`;
+      const drop=i?((d[i-1]-v)/d[i-1]*100).toFixed(1):null;
+      bindTip(hit,fig,`<b>Module ${i+1}${flag?" · 42-minute video":""}</b><br>${fmt(v)} learners active`+(drop?`<br>${drop}% stopped since module ${i}`:"<br>Everyone who started"),m);
+    });
+    el("line",{class:"base",x1:L,x2:W-R,y1:y(0),y2:y(0)},s);
+    const ax=L+slot*2.5+bw/2+10;
+    el("text",{class:"annot",x:ax,y:y(742)-34},s).textContent="Module 3: 42-minute video";
+    el("text",{class:"annot",x:ax,y:y(742)-17},s).textContent="22% of learners stop here";
+    table("modules-t",["Module","Learners active","Stopped since previous"],d.map((v,i)=>[`Module ${i+1}`+(i===2?" (42-min video)":""),fmt(v),i?((d[i-1]-v)/d[i-1]*100).toFixed(1)+"%":"-"]));
+  })();
+
+  /* 3. Course length: vertical bars */
+  (function(){
+    const d=[["Under 10 min",82,61],["10 to 20 min",66,52],["Over 20 min",41,27]];
+    const box=document.getElementById("length"),fig=box.closest("figure");
+    const W=700,H=260,L=46,R=8,T=26,B=40;
+    const s=el("svg",{viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":"Completion rate by course length: under 10 minutes 82%, 10 to 20 minutes 66%, over 20 minutes 41%"},box);
+    const y=v=>T+(H-T-B)*(1-v/100),slot=(W-L-R)/d.length,bw=Math.min(120,slot*0.5);
+    [0,25,50,75,100].forEach(v=>{el("line",{class:"gridline",x1:L,x2:W-R,y1:y(v),y2:y(v)},s);el("text",{class:"axis",x:L-8,y:y(v)+4,"text-anchor":"end"},s).textContent=v+"%"});
+    d.forEach(([k,v,n],i)=>{
+      const cx=L+slot*i+slot/2,g=el("g",{},s);
+      const hit=el("rect",{class:"hit",x:L+slot*i,y:T-16,width:slot,height:H-T-B+16,tabindex:0},g);
+      const m=el("path",{class:"mark",d:vbarPath(cx-bw/2,y(v),bw,y(0)-y(v),4)},g);
+      el("text",{class:"val",x:cx,y:y(v)-8,"text-anchor":"middle"},g).textContent=v+"%";
+      el("text",{class:"axis",x:cx,y:H-B+20,"text-anchor":"middle"},g).textContent=k;
+      bindTip(hit,fig,`<b>${k}</b><br>${v}% average completion<br>${n} courses in the library`,m);
+    });
+    el("line",{class:"base",x1:L,x2:W-R,y1:y(0),y2:y(0)},s);
+    table("length-t",["Course length","Avg completion","Courses"],d.map(([k,v,n])=>[k,v+"%",n]));
+  })();
+
+  /* 4. Stores: scatter with a dashed trend line */
+  (function(){
+    const d=[[28,-0.4],[33,2.6],[35,0.3],[38,1.5],[41,-0.2],[44,2.4],[46,1.1],[49,3.4],[52,3.1],[54,1.6],[56,2.6],[58,1.2],[61,3.4],[63,0.8],[65,3.0],[67,4.1],[70,2.7],[72,2.1],[74,3.6],[77,5.2],[79,3.9],[82,4.8],[85,3.2],[88,4.3]];
+    const box=document.getElementById("stores"),fig=box.closest("figure");
+    const W=700,H=350,L=52,R=14,T=34,B=48;
+    const s=el("svg",{viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":"Scatter plot of 24 stores. Higher pathway completion goes with a bigger rise in customer satisfaction, correlation 0.73."},box);
+    const x=v=>L+(W-L-R)*(v-20)/(100-20),y=v=>T+(H-T-B)*(1-(v+1)/(6+1));
+    [-1,0,2,4,6].forEach(v=>{el("line",{class:v===0?"base":"gridline",x1:L,x2:W-R,y1:y(v),y2:y(v)},s);el("text",{class:"axis",x:L-8,y:y(v)+4,"text-anchor":"end"},s).textContent=(v>0?"+":"")+v});
+    [20,40,60,80,100].forEach(v=>el("text",{class:"axis",x:x(v),y:H-B+20,"text-anchor":"middle"},s).textContent=v+"%");
+    el("text",{class:"axis",x:(L+W-R)/2,y:H-6,"text-anchor":"middle"},s).textContent="Staff who completed the pathway";
+    el("text",{class:"axis",x:L-44,y:T-18},s).textContent="Change in satisfaction (points)";
+    // least-squares trend line
+    const n=d.length,mx=d.reduce((a,p)=>a+p[0],0)/n,my=d.reduce((a,p)=>a+p[1],0)/n;
+    const b=d.reduce((a,p)=>a+(p[0]-mx)*(p[1]-my),0)/d.reduce((a,p)=>a+(p[0]-mx)**2,0),a0=my-b*mx;
+    el("line",{class:"trend",x1:x(26),y1:y(a0+b*26),x2:x(90),y2:y(a0+b*90)},s);
+    d.forEach(([c,v],i)=>{
+      const g=el("g",{},s);
+      const hit=el("circle",{class:"hit",cx:x(c),cy:y(v),r:12,tabindex:0},g);
+      const m=el("circle",{class:"dot mark",cx:x(c),cy:y(v),r:6},g);
+      bindTip(hit,fig,`<b>Store ${String(i+1).padStart(2,"0")}</b><br>${c}% completed<br>Satisfaction ${v>0?"+":""}${v.toFixed(1)} pts`,m);
+    });
+    table("stores-t",["Store","Completed","Satisfaction change"],d.map(([c,v],i)=>[`Store ${String(i+1).padStart(2,"0")}`,c+"%",(v>0?"+":"")+v.toFixed(1)]));
+  })();
+})();
+</script>
+</body>
+</html>
